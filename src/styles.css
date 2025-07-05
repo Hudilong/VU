@@ -16,7 +16,6 @@
   #drawCanvas {
     position: absolute;
     inset: 0;
-    pointer-events: none;   /* keeps stars & links clickable           */
     z-index: 1;
   }
   
