@@ -36,8 +36,7 @@
     canvas.style.width  = width  + 'px';
     canvas.style.height = height + 'px';
 
-    ctx.resetTransform();
-    ctx.scale(DPR, DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.lineWidth   = 1.5;
     ctx.lineCap     = 'round';
     ctx.lineJoin    = 'round';
