@@ -44,6 +44,7 @@
     ctx.strokeStyle = 'rgba(160,153,102,1)';
   }
   resize();
+  window.addEventListener('load', resize);
   window.addEventListener('resize', resize);
 
   /* --- helper: pointer pos inside the canvas, scroll-proof ------- */
