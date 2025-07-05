@@ -1,0 +1,47 @@
+html {
+  background-color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+#constellationSection {
+    position: relative;     /* establishes a containing block          */
+    width: 100%;
+    height: 100vh;          /* one full viewport tall                  */
+    overflow: hidden;       /* keep strokes from spilling outside      */
+  }
+  
+  /* starfield layer ---------------------------------------------- */
+  #starfield {
+    position: absolute;
+    inset: 0;               /* fills the section (not the whole page)  */
+  }
+  
+  /* drawing canvas (pointer-transparent) -------------------------- */
+  #drawCanvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;   /* keeps stars & links clickable           */
+    z-index: 1;
+  }
+  
+  /* stars --------------------------------------------------------- */
+  .star {
+    position: absolute;
+    width:10px; height:10px;
+    background:#A09966; border-radius:50%;
+    transform:translate(-50%, -50%);
+    z-index:2;
+    transition:transform .18s ease;
+  }
+  
+  .star:hover       { transform:translate(-50%, -50%) scale(1.5); }
+  .star:hover::after{
+    content:attr(data-title);
+    position:absolute; top:-2.2rem; left:50%;
+    transform:translateX(-50%);
+    background:#222; color:#fff;
+    font:12px/1 sans-serif;
+    padding:2px 6px; border-radius:4px;
+    white-space:nowrap; pointer-events:none;
+  }
