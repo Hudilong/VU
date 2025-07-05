@@ -7,16 +7,16 @@
 
   /* --- sprinkle stars ------------------------------------------- */
   const stars = [
-    { x:18, y:30, href:'/about',    title:'Reconnaissances territoriales' },
-    { x:26, y:42, href:'/projects', title:'Strategies décoloniales' },
-    { x:34, y:55, href:'/shop',     title:'Alliances et collaborations' },
-    { x:42, y:43, href:'/contact',  title:'Appropriation et protocols dans les arts autochtones' },
-    { x:55, y:35, href:'/blog',     title:'Luttes antiracistes' },
-    { x:66, y:27, href:'/blog',     title:'Relationnalité et souveraineté autochtone(safe space)' },
-    { x:77, y:18, href:'/blog',     title:'Projets d’alliance (allo-autochtone)' },
-    { x:83, y:12, href:'/blog',     title:'Arts autochtones' },
-    { x:72, y:10, href:'/blog',     title:'Autres ressources' },
-    { x:60, y:15, href:'/blog',     title:'Culture wendat' },
+    { x:18, y:50, href:'/about',    title:'Reconnaissances territoriales' },
+    { x:26, y:62, href:'/projects', title:'Strategies décoloniales' },
+    { x:34, y:75, href:'/shop',     title:'Alliances et collaborations' },
+    { x:42, y:63, href:'/contact',  title:'Appropriation et protocols dans les arts autochtones' },
+    { x:55, y:55, href:'/blog',     title:'Luttes antiracistes' },
+    { x:66, y:57, href:'/blog',     title:'Relationnalité et souveraineté autochtone(safe space)' },
+    { x:77, y:58, href:'/blog',     title:'Projets d’alliance (allo-autochtone)' },
+    { x:77, y:32, href:'/blog',     title:'Arts autochtones' },
+    { x:72, y:20, href:'/blog',     title:'Autres ressources' },
+    { x:60, y:25, href:'/blog',     title:'Culture wendat' },
   ];
   stars.forEach(({x,y,href,title})=>{
     const a = Object.assign(document.createElement('a'), {
