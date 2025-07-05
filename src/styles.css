@@ -2,7 +2,7 @@
 #constellationSection {
     position: relative;     /* establishes a containing block          */
     width: 100%;
-    min-height: 100vh !important;          /* one full viewport tall                  */
+    min-height: 80vh;          /* one full viewport tall                  */
     overflow: hidden;       /* keep strokes from spilling outside      */
   }
   
