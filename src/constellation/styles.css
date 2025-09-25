@@ -1,4 +1,3 @@
-
 #constellationSection {
     position: relative;     /* establishes a containing block          */
     width: 100%;
@@ -46,27 +45,10 @@
   content:attr(data-title);
   position:absolute;top:-2.2rem;left:50%;
   transform:translateX(-50%);
-  background:#222;color:#fff;
+  color:#A09966;
+  font-family: 'favorit', sans-serif;
+  font-weight: 900;
   font:12px/1 sans-serif;
   padding:2px 6px;border-radius:4px;
   white-space:nowrap;pointer-events:none;
 }
-
-#top-bar {
-    position: fixed;
-    top: -50px; /* hidden by default */
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background: #2F778A;
-    color: #A09966;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: top 0.3s ease;
-    z-index: 9999;
-    pointer-events: "none"
-  }
-  #top-bar.show {
-    top: 0; /* slide down */
-  }
