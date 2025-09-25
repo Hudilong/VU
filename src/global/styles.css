@@ -11,7 +11,7 @@
     justify-content: center;
     transition: top 0.3s ease;
     z-index: 9999;
-    pointer-events: "none"
+    pointer-events: none; /* allow clicks to pass through when hidden */
   }
   #top-bar.show {
     top: 0; /* slide down */
