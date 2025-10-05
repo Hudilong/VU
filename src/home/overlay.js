@@ -4,10 +4,10 @@
     if (sessionStorage.getItem("overlayDismissed") === "true") {
         overlay.style.display = "none";
         return;
+    } else {
+        overlay.addEventListener("click", () => {
+            sessionStorage.setItem("overlayDismissed", "true");
+            console.log('overlay was clicked');
+        });
     }
-    
-    overlay.addEventListener("click", () => {
-        sessionStorage.setItem("overlayDismissed", "true");
-        console.log('overlay was clicked');
-    });
 })();
