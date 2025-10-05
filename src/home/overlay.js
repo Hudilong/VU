@@ -1,6 +1,6 @@
 (() => {
     const overlayElements = [document.querySelector("#Q1957128348"), document.querySelector("#R1668069488")];
-    console.log(overlay);
+    console.log(overlayElements);
     if (sessionStorage.getItem("overlayDismissed") === "true") {
         hideOverlay();
         return;
