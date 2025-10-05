@@ -5,8 +5,10 @@
         const closeOverlayLink = document.querySelector('[rel="close-overlay"]');
         if (closeOverlayLink) {
             closeOverlayLink.click();
+            console.log('Close overlay link does exist and was clicked');
         } else {
             overlay.style.display = "none";
+            console.log('Overlay display set to none');
         }
         return;
     } else {
