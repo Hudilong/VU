@@ -47,8 +47,28 @@
   transform:translateX(-50%);
   color:#A09966;
   font-family: 'favorit', sans-serif;
-  font-weight: 900;
   font:12px/1 sans-serif;
   padding:2px 6px;border-radius:4px;
   white-space:nowrap;pointer-events:none;
+}
+
+#cursor-indicator {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -150%);
+  z-index: 10;
+  padding: 6px 10px;
+  font-size: 16px;
+  font-family: 'favorit', sans-serif;
+  color:#A09966;
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+  white-space: nowrap;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+#cursor-indicator.hidden {
+  opacity: 0;
 }
