@@ -1,7 +1,16 @@
 (() => {
   /* ===== Setup =================================================== */
-  const canvas  = document.getElementById('drawCanvas');
-  const field   = document.getElementById('starfield');
+  const page = document.querySelector('[page-url="constellation"]');
+  const section = document.createElement('section');
+  section.id = 'constellationSection';
+  page.appendChild(section);
+  const field = document.createElement('div');
+  field.id = 'starfield';
+  section.appendChild(field);
+  const canvas = document.createElement("canvas");
+  canvas.id = 'drawCanvas';
+  field.appendChild(canvas);
+
   const ctx     = canvas.getContext('2d');
   const DPR     = window.devicePixelRatio || 1;
 
