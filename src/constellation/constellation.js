@@ -1,6 +1,6 @@
 (() => {
   /* ===== Setup =================================================== */
-  const page = document.querySelector('[page-url="constellation"]');
+  const page = document.querySelector("[page-url='constellations']");
   const section = document.createElement('section');
   section.id = 'constellationSection';
   page.appendChild(section);
