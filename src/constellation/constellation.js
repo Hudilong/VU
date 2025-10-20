@@ -1,16 +1,14 @@
 (() => {
-  /* ===== Setup =================================================== */
-  const page = document.querySelector("[page-url='constellations']");
-  const section = document.createElement('section');
-  section.id = 'constellationSection';
-  page.appendChild(section);
-  const field = document.createElement('div');
-  field.id = 'starfield';
-  section.appendChild(field);
-  const canvas = document.createElement("canvas");
-  canvas.id = 'drawCanvas';
-  field.appendChild(canvas);
+  function init() {
+    const canvas = document.getElementById('drawCanvas');
+    const field  = document.getElementById('starfield');
+    if (!canvas || !field) {
+      // Retry until both elements exist
+      return setTimeout(init, 100);
+    }
+    }
 
+  /* ===== Setup =================================================== */
   const ctx     = canvas.getContext('2d');
   const DPR     = window.devicePixelRatio || 1;
 
@@ -125,4 +123,7 @@
     promptMode = 'click';
     updatePrompt();
   });
+
+  // Start polling until the elements are ready
+  init();
 })();
