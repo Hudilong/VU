@@ -17,15 +17,18 @@
     top: 0; /* slide down */
   }
 
-  #marqueecursor-indicator {
-  position: absolute;
+  #marquee-cursor-indicator {
+  position: fixed;         /* fixed so it follows the viewport */
+  left: 0;
+  top: 0;
   pointer-events: none;
-  transform: translate(-50%, -150%);
-  z-index: 10;
+  /* DO NOT set transform here; JS updates it every frame */
+  z-index: 2147483647;
+
   padding: 6px 10px;
   font-size: 16px;
   font-family: 'favorit', sans-serif;
-  color:#A09966;
+  color: #A09966;          /* add a background if contrast is low */
   border-radius: 10px;
   backdrop-filter: blur(2px);
   white-space: nowrap;
