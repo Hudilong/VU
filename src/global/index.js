@@ -1,4 +1,8 @@
 (() => {
+  const OVERLAY_ID = "Z0762089527";
+  const OVERLAY_SEEN_KEY = "introOverlaySeen";
+  const INDICATOR_SEEN_KEY = "marqueeIndicatorSeen";
+
   /* ========= Top Bar ========= */
   const initTopBar = () => {
     const bar = document.createElement("div");
@@ -20,14 +24,47 @@
     });
   };
 
+  /* ========= Overlay Gate ========= */
+  const initOverlayGate = (onSeen) => {
+    const markSeen = () => {
+      if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") return;
+      sessionStorage.setItem(OVERLAY_SEEN_KEY, "1");
+      onSeen?.();
+    };
+
+    if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") {
+      onSeen?.();
+      return;
+    }
+
+    const wire = () => {
+      const overlay = document.getElementById(OVERLAY_ID);
+      if (!overlay) return false;
+      const host = overlay.parentElement || overlay;
+      if (!host || host._overlayGateWired) return false;
+      host._overlayGateWired = true;
+      host.addEventListener("click", markSeen, { once: true });
+      return true;
+    };
+
+    if (wire()) return;
+
+    const observer = new MutationObserver(() => {
+      if (wire()) observer.disconnect();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  };
+
   /* ========= Marquee Indicator ========= */
   const initMarqueeIndicator = () => {
     const SELECTOR = "marquee-set";
     const INDICATOR_ID = "marquee-cursor-indicator";
     const HIDDEN_CLASS = "hidden";
     const LABEL = "Cliquez pour défiler";
+    const overlaySeen = () => sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1";
+    const indicatorSeen = () => sessionStorage.getItem(INDICATOR_SEEN_KEY) === "1";
 
-    let canShow = true;
+    let canShow = overlaySeen() && !indicatorSeen();
 
     function ensureIndicator() {
       let el = document.getElementById(INDICATOR_ID);
@@ -45,9 +82,11 @@
     }
 
     function showIndicator(x, y) {
-      if (!canShow) return;
+      if (!canShow || !overlaySeen()) return;
       const indicator = ensureIndicator();
       if (!indicator) return;
+      sessionStorage.setItem(INDICATOR_SEEN_KEY, "1");
+      canShow = false;
       indicator.classList.remove(HIDDEN_CLASS);
       const dx = Math.round(x - indicator.offsetWidth / 2);
       const dy = Math.round(y - indicator.offsetHeight - 10);
@@ -59,6 +98,11 @@
       if (!indicator) return;
       indicator.classList.add(HIDDEN_CLASS);
     }
+
+    const recomputePermission = () => {
+      canShow = overlaySeen() && !indicatorSeen();
+      if (!canShow) hideIndicator();
+    };
 
     function wire(node) {
       try {
@@ -113,7 +157,7 @@
         if (mutation.type === "childList") {
           const marqueeEl = document.querySelector(SELECTOR);
           if (marqueeEl) {
-            canShow = true;
+            recomputePermission();
             marqueeEl.style.position = "relative";
             marqueeEl.style.zIndex = "200";
             wire(marqueeEl);
@@ -128,12 +172,15 @@
       const marqueeObserver = new MutationObserver(marqueeCallback);
       marqueeObserver.observe(contentNode, { childList: true, subtree: true });
     });
+
+    return { recomputePermission };
   };
 
   /* ========= Boot ========= */
   const boot = () => {
     initTopBar();
-    initMarqueeIndicator();
+    const indicator = initMarqueeIndicator();
+    initOverlayGate(() => indicator?.recomputePermission());
   };
 
   if (document.readyState === "loading") {
