@@ -37,16 +37,36 @@
       return;
     }
 
-    const wire = () => {
-      const overlay = document.getElementById(OVERLAY_ID);
+    const armOverlay = (overlay) => {
       if (!overlay) return false;
+      if (!overlay._overlayGateWired) {
+        overlay._overlayGateWired = true;
+        overlay.addEventListener("click", markSeen, { capture: true });
+      }
+
       const host = overlay.parentElement || overlay;
-      if (!host || host._overlayGateWired) return false;
-      host._overlayGateWired = true;
-      host.addEventListener("click", markSeen, { once: true });
+      if (host && !host._overlayGateWired) {
+        host._overlayGateWired = true;
+        host.addEventListener("click", markSeen, { capture: true });
+      }
+
+      const closer = overlay.querySelector?.('[rel="close-overlay"]');
+      if (closer && !closer._overlayGateWired) {
+        closer._overlayGateWired = true;
+        closer.addEventListener("click", markSeen, { capture: true });
+      }
+
+      const removalObserver = new MutationObserver(() => {
+        if (!document.getElementById(OVERLAY_ID)) {
+          removalObserver.disconnect();
+          markSeen();
+        }
+      });
+      removalObserver.observe(document.body, { childList: true, subtree: true });
       return true;
     };
 
+    const wire = () => armOverlay(document.getElementById(OVERLAY_ID));
     if (wire()) return;
 
     const observer = new MutationObserver(() => {
