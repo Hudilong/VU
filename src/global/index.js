@@ -25,14 +25,27 @@
   };
 
   /* ========= Overlay Gate ========= */
+  const dismissOverlay = () => {
+    const overlay = document.getElementById(OVERLAY_ID);
+    if (!overlay) return;
+    const closer = overlay.querySelector?.('[rel="close-overlay"]');
+    if (closer) {
+      closer.click();
+    } else {
+      overlay.style.display = "none";
+    }
+  };
+
   const initOverlayGate = (onSeen) => {
     const markSeen = () => {
       if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") return;
       sessionStorage.setItem(OVERLAY_SEEN_KEY, "1");
+      dismissOverlay();
       onSeen?.();
     };
 
     if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") {
+      dismissOverlay();
       onSeen?.();
       return;
     }
@@ -85,6 +98,7 @@
     const indicatorSeen = () => sessionStorage.getItem(INDICATOR_SEEN_KEY) === "1";
 
     let canShow = overlaySeen() && !indicatorSeen();
+    let indicatorVisible = false;
 
     function ensureIndicator() {
       let el = document.getElementById(INDICATOR_ID);
@@ -102,12 +116,18 @@
     }
 
     function showIndicator(x, y) {
-      if (!canShow || !overlaySeen()) return;
       const indicator = ensureIndicator();
       if (!indicator) return;
-      sessionStorage.setItem(INDICATOR_SEEN_KEY, "1");
-      canShow = false;
-      indicator.classList.remove(HIDDEN_CLASS);
+      const allowFirstDisplay = canShow && overlaySeen();
+      if (!allowFirstDisplay && !indicatorVisible) return;
+
+      if (!indicatorVisible) {
+        sessionStorage.setItem(INDICATOR_SEEN_KEY, "1");
+        canShow = false;
+        indicator.classList.remove(HIDDEN_CLASS);
+        indicatorVisible = true;
+      }
+
       const dx = Math.round(x - indicator.offsetWidth / 2);
       const dy = Math.round(y - indicator.offsetHeight - 10);
       indicator.style.transform = `translate(${dx}px, ${dy}px)`;
@@ -117,6 +137,7 @@
       const indicator = ensureIndicator();
       if (!indicator) return;
       indicator.classList.add(HIDDEN_CLASS);
+      indicatorVisible = false;
     }
 
     const recomputePermission = () => {
