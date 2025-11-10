@@ -2,6 +2,7 @@
   const OVERLAY_ID = "Z0762089527";
   const OVERLAY_SEEN_KEY = "introOverlaySeen";
   const INDICATOR_SEEN_KEY = "marqueeIndicatorSeen";
+  const hasSeenOverlay = () => sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1";
 
   /* ========= Top Bar ========= */
   const initTopBar = () => {
@@ -25,33 +26,37 @@
   };
 
   /* ========= Overlay Gate ========= */
-  const dismissOverlay = () => {
-    const overlay = document.getElementById(OVERLAY_ID);
-    if (!overlay) return;
-    const closer = overlay.querySelector?.('[rel="close-overlay"]');
-    if (closer) {
+  const dismissOverlay = (overlay) => {
+    const el = overlay || document.getElementById(OVERLAY_ID);
+    if (!el) return;
+    const closer = el.querySelector?.('[rel="close-overlay"]');
+    if (closer && !closer._overlayGateClosed) {
+      closer._overlayGateClosed = true;
       closer.click();
     } else {
-      overlay.style.display = "none";
+      el.style.display = "none";
+      el.setAttribute("aria-hidden", "true");
     }
   };
 
   const initOverlayGate = (onSeen) => {
     const markSeen = () => {
-      if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") return;
+      if (hasSeenOverlay()) return;
       sessionStorage.setItem(OVERLAY_SEEN_KEY, "1");
       dismissOverlay();
       onSeen?.();
     };
 
-    if (sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1") {
-      dismissOverlay();
-      onSeen?.();
-      return;
-    }
-
-    const armOverlay = (overlay) => {
+    const armOverlay = () => {
+      const overlay = document.getElementById(OVERLAY_ID);
       if (!overlay) return false;
+
+      if (hasSeenOverlay()) {
+        dismissOverlay(overlay);
+        onSeen?.();
+        return true;
+      }
+
       if (!overlay._overlayGateWired) {
         overlay._overlayGateWired = true;
         overlay.addEventListener("click", markSeen, { capture: true });
@@ -79,12 +84,8 @@
       return true;
     };
 
-    const wire = () => armOverlay(document.getElementById(OVERLAY_ID));
-    if (wire()) return;
-
-    const observer = new MutationObserver(() => {
-      if (wire()) observer.disconnect();
-    });
+    armOverlay();
+    const observer = new MutationObserver(() => armOverlay());
     observer.observe(document.body, { childList: true, subtree: true });
   };
 
@@ -94,7 +95,7 @@
     const INDICATOR_ID = "marquee-cursor-indicator";
     const HIDDEN_CLASS = "hidden";
     const LABEL = "Cliquez pour défiler";
-    const overlaySeen = () => sessionStorage.getItem(OVERLAY_SEEN_KEY) === "1";
+    const overlaySeen = () => hasSeenOverlay();
     const indicatorSeen = () => sessionStorage.getItem(INDICATOR_SEEN_KEY) === "1";
 
     let canShow = overlaySeen() && !indicatorSeen();
