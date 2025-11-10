@@ -1,3 +1,17 @@
 [id="F2269990841"] .page-content a:hover {
     color: #2F778A
 }
+
+
+media-item figcaption[slot="caption"],
+media-item .caption[slot="caption"] {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+media-item:hover figcaption[slot="caption"],
+media-item:hover .caption[slot="caption"] {
+  opacity: 1;
+  pointer-events: auto;
+}

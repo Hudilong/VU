@@ -1,9 +1,9 @@
 #top-bar {
     position: fixed;
-    top: -50px; /* hidden by default */
+    top: -15px; /* hidden by default */
     left: 0;
     width: 100%;
-    height: 50px;
+    height: 15px;
     background: #2F778A;
     color: #A09966;
     display: flex;
@@ -39,4 +39,17 @@
 
 #marquee-cursor-indicator.hidden {
   opacity: 0;
+}
+
+media-item figcaption[slot="caption"],
+media-item .caption[slot="caption"] {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+media-item:hover figcaption[slot="caption"],
+media-item:hover .caption[slot="caption"] {
+  opacity: 1;
+  pointer-events: auto;
 }
